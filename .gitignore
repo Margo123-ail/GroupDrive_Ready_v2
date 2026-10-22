@@ -11,3 +11,24 @@ uploads/*
 node_modules/
 uploads/*
 !uploads/.gitkeep
+
+# Secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Local databases and backups
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data_backup/
+uploads/
+uploads_backup/
+
+# Dependencies and temporary backups
+node_modules/
+*.backup
+*.before-fix
+*.before-lines-fix
+*.before-session-fix
+GroupDrive_REPORT.txt
