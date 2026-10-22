@@ -1,35 +1,458 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080e1d">
-<title>GroupDrive — панель администратора</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080e1d">
+<title>GroupDrive — Панель администратора</title>
 <style>
-:root{color-scheme:dark;--bg:#080e1d;--panel:#101b31;--line:#263858;--text:#eff4ff;--muted:#93a7cc;--cyan:#5ad9f4;--purple:#7f70ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 60% -20%,#23386b,transparent 50%),var(--bg);color:var(--text);font:15px/1.5 Inter,"Segoe UI",Arial,sans-serif}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;border-bottom:1px solid #1d2b48;background:#080f20;position:sticky;top:0;z-index:5}.brand{font-size:25px;font-weight:850}.brand b{color:var(--cyan)}a{color:#80e4f4}.wrap{max-width:1250px;margin:auto;padding:26px}.hero{padding:26px 30px;border-radius:20px;background:linear-gradient(115deg,#16447c,#343d9c 58%,#714cae);margin-bottom:22px}.hero h1{margin:0 0 7px;font-size:clamp(26px,4vw,36px)}.hero p{margin:0;color:#e0e9ff}.panel{background:linear-gradient(145deg,#101d34,#0b1426);border:1px solid var(--line);border-radius:17px;padding:20px;margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}.card{background:#0a1428;border:1px solid #253858;border-radius:14px;padding:17px;min-width:0}.muted,small{color:var(--muted)}label{display:block;margin:12px 0 6px;color:#c7d4ee;font-size:13px}input{width:100%;border:1px solid #293d61;border-radius:10px;padding:12px;background:#0a1428;color:white;font:inherit}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #2b3d60;border-radius:10px;background:#14213a;padding:10px 14px;color:white;text-decoration:none;font:inherit;font-weight:650;cursor:pointer;margin-top:10px}.btn.primary{background:linear-gradient(110deg,#4b5fff,#6b4fff);border-color:transparent}.btn.danger{background:#472035;border-color:#743b58}.btn:disabled{opacity:.5;cursor:not-allowed}.notice{display:none;padding:12px 15px;border-radius:10px;margin:12px 0}.notice.show{display:block}.notice.error{background:#441d2c;color:#ffd9e1}.notice.success{background:#12382f;color:#c8ffed}.badge{display:inline-flex;border-radius:999px;padding:4px 9px;font-size:12px;background:#263858;color:#dbe8ff}.badge.student{background:#173b53;color:#bcefff}.badge.teacher{background:#3b315f;color:#e8ddff}.top-actions{display:flex;gap:10px;flex-wrap:wrap}h2{margin:0 0 14px}.person-name{font-size:19px;font-weight:750;margin:0 0 6px;overflow-wrap:anywhere}.person-meta{font-size:13px;color:var(--muted);overflow-wrap:anywhere}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}.hidden{display:none!important}.empty{padding:20px;border:1px dashed #304264;border-radius:13px;color:var(--muted)}@media(max-width:650px){.wrap{padding:14px}.top{padding:14px}.row{grid-template-columns:1fr}.hero{padding:22px}}
-</style></head>
+:root{color-scheme:dark;--bg:#080e1d;--panel:#101b31;--line:#263858;--text:#eff4ff;--muted:#93a7cc;--cyan:#5ad9f4;--purple:#7f70ff}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 60% -20%,#23386b,transparent 50%),var(--bg);color:var(--text);font:15px/1.5 "Segoe UI",Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#080f20;border-bottom:1px solid var(--line);padding:15px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:25px;font-weight:850}.brand b{color:var(--cyan)}
+a{color:#80e4f4}.wrap{max-width:1350px;margin:auto;padding:24px}
+.hero{padding:26px;border-radius:18px;background:linear-gradient(115deg,#16447c,#343d9c 58%,#714cae);margin-bottom:20px}
+.hero h1{margin:0 0 8px;font-size:clamp(25px,4vw,36px)}.hero p{margin:0}
+.panel{background:linear-gradient(145deg,#101d34,#0b1426);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px}
+.card{background:#0a1428;border:1px solid #253858;border-radius:13px;padding:16px;min-width:0;overflow-wrap:anywhere}
+h2{margin:0 0 14px;font-size:21px}h3{margin:9px 0}
+.muted,small{color:var(--muted)}label{display:block;margin:10px 0 5px;color:#c7d4ee;font-size:13px}
+input,select{width:100%;border:1px solid #293d61;border-radius:9px;padding:11px;background:#0a1428;color:white;font:inherit}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #2b3d60;border-radius:9px;background:#14213a;padding:9px 13px;color:white;text-decoration:none;font:inherit;font-weight:650;cursor:pointer;margin:5px 5px 0 0}
+.primary{background:linear-gradient(110deg,#4b5fff,#6b4fff);border-color:transparent}
+.danger{background:#472035;border-color:#743b58}.good{background:#12382f;border-color:#23634f}
+.btn:disabled{opacity:.5;cursor:wait}
+.badge{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;background:#263858;color:#dbe8ff}
+.pending{background:#62451d;color:#ffdf9b}.approved{background:#174534;color:#b8ffda}.rejected{background:#492238;color:#ffd1e1}
+.student{background:#173b53;color:#bcefff}.teacher{background:#3b315f;color:#e8ddff}
+.notice{display:none;padding:12px 15px;border-radius:10px;margin:12px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.notice.show{display:block}.notice.error{background:#441d2c;color:#ffd9e1}.notice.success{background:#12382f;color:#c8ffed}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.empty{padding:18px;border:1px dashed #304264;border-radius:12px;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.tab{padding:9px 13px;border:1px solid var(--line);border-radius:9px;background:#101b31;color:white;cursor:pointer}
+.tab.active{background:#303c83;border-color:#7f70ff}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:700px}
+th,td{text-align:left;padding:11px;border-bottom:1px solid #263858;vertical-align:top}
+th{color:#a9bddf;font-weight:650}td input,td select{min-width:125px}
+.small-btn{padding:6px 9px;font-size:13px}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:#000b;z-index:20;display:flex;align-items:center;justify-content:center;padding:18px}
+.modal-box{width:min(460px,100%);background:#101b31;border:1px solid #405477;border-radius:16px;padding:22px}
+@media(max-width:650px){.wrap{padding:12px}header{padding:12px}.panel{padding:14px}.hero{padding:20px}}
+</style>
+</head>
 <body>
-<header class="top"><div class="brand">☁ Group<b>Drive</b></div><div class="top-actions"><a class="btn" href="/dashboard.html">← К файлам</a><a class="btn" href="/reviews.html">Проверка работ</a></div></header>
+<header>
+  <div class="brand">Group<b>Drive</b> <span class="muted" style="font-size:13px">/ Администратор</span></div>
+  <div>
+    <a class="btn" href="/dashboard.html">Мои файлы</a>
+    <a class="btn" href="/reviews.html">Проверка работ</a>
+  </div>
+</header>
+
 <main class="wrap">
-<section class="hero"><h1>Панель администратора</h1><p>Управление преподавателями и каталог пользователей. Работы не смешиваются с файлами администратора: у каждого пользователя свой профиль и свои файлы.</p></section>
+<section class="hero">
+  <h1>Панель администратора</h1>
+  <p>Заявки студентов, аккаунты, учебные группы и преподаватели — в одном месте.</p>
+</section>
+
 <div id="notice" class="notice" role="status"></div>
-<section class="panel"><h2>＋ Добавить преподавателя</h2><p class="muted">Преподаватель сможет проверять работы учеников, писать комментарии, публиковать задания и разрешать или запрещать скачивание файлов. Ученики регистрируются самостоятельно.</p>
-<form id="teacherForm"><div class="row"><div><label for="name">Имя и фамилия преподавателя</label><input id="name" required minlength="2" maxlength="100" placeholder="Например, Анна Смирнова" autocomplete="name"></div><div><label for="email">Рабочая почта</label><input id="email" type="email" required placeholder="teacher@example.com" autocomplete="email"></div></div><label for="password">Временный пароль (не менее 12 символов)</label><input id="password" type="password" required minlength="12" autocomplete="new-password" placeholder="Придумай временный пароль"><button class="btn primary" id="submit">Создать преподавателя</button></form></section>
-<section class="panel"><div class="section-head"><div><h2>Ученики</h2><p class="muted">Нажми на «Открыть работы», чтобы посмотреть отправленные файлы.</p></div><span class="badge student" id="studentCount">0 учеников</span></div><div id="students" class="grid"><div class="empty">Загружаем список учеников…</div></div></section>
-<section class="panel"><div class="section-head"><div><h2>Преподаватели</h2><p class="muted">Только администратор может добавлять и снимать роль преподавателя.</p></div><span class="badge teacher" id="teacherCount">0 преподавателей</span></div><div id="teachers" class="grid"><div class="empty">Загружаем список преподавателей…</div></div></section>
+
+<div class="tabs">
+  <button class="tab active" data-tab="requests">Заявки <span id="pendingCount">…</span></button>
+  <button class="tab" data-tab="accounts">Все аккаунты</button>
+  <button class="tab" data-tab="groups">Учебные группы</button>
+  <button class="tab" data-tab="teachers">Преподаватели</button>
+</div>
+
+<section class="panel" id="requests">
+  <div class="section-head">
+    <div><h2>Заявки на подтверждение</h2><p class="muted">Подтверди статус студента и при необходимости назначь ему группу.</p></div>
+    <button class="btn" onclick="refreshAll()">Обновить</button>
+  </div>
+  <div id="pendingList" class="grid"><div class="empty">Загрузка заявок…</div></div>
+</section>
+
+<section class="panel hidden" id="accounts">
+  <div class="section-head">
+    <div><h2>Все аккаунты</h2><p class="muted">Почта, роль, статус и группа пользователя.</p></div>
+    <button class="btn" onclick="refreshAll()">Обновить</button>
+  </div>
+  <div class="row">
+    <div><label for="search">Поиск по имени или почте</label><input id="search" placeholder="Начни вводить…"></div>
+    <div><label for="roleFilter">Роль</label><select id="roleFilter"><option value="">Все роли</option><option value="student">Студенты</option><option value="teacher">Преподаватели</option><option value="admin">Администраторы</option></select></div>
+  </div>
+  <div class="table-wrap" style="margin-top:15px">
+    <table><thead><tr><th>Пользователь</th><th>Почта</th><th>Роль</th><th>Статус</th><th>Группа</th><th>Действия</th></tr></thead>
+    <tbody id="accountRows"><tr><td colspan="6">Загрузка аккаунтов…</td></tr></tbody></table>
+  </div>
+  <p class="muted">Пароли не показываются: они хранятся в виде защищённых хешей. Для восстановления доступа используй сброс пароля.</p>
+</section>
+
+<section class="panel hidden" id="groups">
+  <h2>Учебные группы</h2>
+  <p class="muted">Создавай группы, переименовывай их и назначай преподавателей. Удаление группы может затронуть назначение студентов — используй его осторожно.</p>
+  <form id="groupForm">
+    <label for="groupName">Название новой группы</label>
+    <div class="row"><input id="groupName" required maxlength="100" placeholder="Например, ИС-21"><button class="btn primary" type="submit">Создать группу</button></div>
+  </form>
+  <div id="groupList" class="grid" style="margin-top:16px"><div class="empty">Загрузка групп…</div></div>
+</section>
+
+<section class="panel hidden" id="teachers">
+  <h2>Добавить преподавателя</h2>
+  <p class="muted">Аккаунты преподавателей создаёт только администратор. Укажи временный пароль и передай его преподавателю безопасным способом.</p>
+  <form id="teacherForm">
+    <div class="row">
+      <div><label for="teacherName">ФИО преподавателя</label><input id="teacherName" required minlength="2" maxlength="100" autocomplete="name"></div>
+      <div><label for="teacherEmail">Рабочая почта</label><input id="teacherEmail" type="email" required autocomplete="email"></div>
+      <div><label for="teacherPassword">Временный пароль (минимум 12 символов)</label><input id="teacherPassword" type="password" required minlength="12" autocomplete="new-password"></div>
+    </div>
+    <button class="btn primary" type="submit" id="teacherSubmit">Создать преподавателя</button>
+  </form>
+  <h2 style="margin-top:25px">Список преподавателей</h2>
+  <div id="teacherList" class="grid"><div class="empty">Загрузка преподавателей…</div></div>
+</section>
 </main>
+
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <h2 id="modalTitle">Подтверждение администратора</h2>
+    <p id="modalText" class="muted">Введи свой пароль для подтверждения действия.</p>
+    <label for="adminPassword">Твой пароль администратора</label>
+    <input id="adminPassword" type="password" autocomplete="current-password">
+    <div id="modalExtra"></div>
+    <div style="margin-top:15px">
+      <button id="modalConfirm" class="btn primary">Подтвердить</button>
+      <button id="modalCancel" class="btn">Отмена</button>
+    </div>
+  </div>
+</div>
+
 <script>
-(()=>{
- const $=id=>document.getElementById(id);
- const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- async function api(url,opts={}){const r=await fetch(url,{credentials:'same-origin',...opts});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'Ошибка запроса');return d}
- function say(t,isError=false){$('notice').textContent=t;$('notice').className='notice show '+(isError?'error':'success');$('notice').scrollIntoView({behavior:'smooth',block:'nearest'})}
- function surnameSort(a,b){const last=x=>String(x.name||'').trim().split(/\s+/).slice(-1)[0]||x.name||'';return last(a).localeCompare(last(b),'ru')||String(a.name).localeCompare(String(b.name),'ru')}
- async function init(){try{const me=await api('/api/me');if(me.role!=='admin'){say('Эта страница доступна только администратору.',true);$('teacherForm').classList.add('hidden');return}await loadDirectory()}catch(e){say(e.message+' Войди в аккаунт администратора.',true)}}
- async function loadDirectory(){const users=await api('/api/admin/users');const students=users.filter(u=>u.role==='student').sort(surnameSort);const teachers=users.filter(u=>u.role==='teacher').sort(surnameSort);$('studentCount').textContent=students.length+' учеников';$('teacherCount').textContent=teachers.length+' преподавателей';
-  $('students').innerHTML=students.length?students.map(u=>`<article class="card"><span class="badge student">Ученик</span><h3 class="person-name">${esc(u.name)}</h3><div class="person-meta">${esc(u.email)}</div><p class="person-meta">Работ: ${Number(u.files_count)||0} · аккаунт №${u.id}</p><a class="btn primary" href="/reviews.html?student_id=${u.id}">Открыть работы →</a></article>`).join(''):'<div class="empty">Пока никто не зарегистрировался.</div>';
-  $('teachers').innerHTML=teachers.length?teachers.map(u=>`<article class="card"><span class="badge teacher">Преподаватель</span><h3 class="person-name">${esc(u.name)}</h3><div class="person-meta">${esc(u.email)}</div><p class="person-meta">Файлов: ${Number(u.files_count)||0} · аккаунт №${u.id}</p><button class="btn danger" data-remove="${u.id}" type="button">Снять роль преподавателя</button></article>`).join(''):'<div class="empty">Преподавателей пока нет. Добавь первого выше.</div>';
-  document.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=async()=>{if(!confirm('Снять роль преподавателя? Аккаунт и файлы сохранятся, но пользователь станет учеником.'))return;try{await api('/api/admin/teachers/'+btn.dataset.remove,{method:'DELETE'});say('Роль преподавателя снята.');await loadDirectory()}catch(e){say(e.message,true)}})
- }
- $('teacherForm').onsubmit=async e=>{e.preventDefault();const btn=$('submit');btn.disabled=true;try{const d=await api('/api/admin/teachers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:$('name').value.trim(),email:$('email').value.trim(),password:$('password').value})});say(d.message||'Преподаватель создан.');$('teacherForm').reset();await loadDirectory()}catch(e){say(e.message,true)}finally{btn.disabled=false}};
- init();
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+let users = [], groups = [], pending = [], teachers = [];
+let modalAction = null;
+
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+
+function say(message, error=false) {
+  $('notice').textContent = message;
+  $('notice').className = 'notice show ' + (error ? 'error' : 'success');
+  $('notice').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function dateText(value) {
+  if (!value) return '—';
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleString('ru-RU');
+}
+function roleText(role) {
+  return ({student:'Студент',teacher:'Преподаватель',admin:'Администратор'})[role] || role || '—';
+}
+function statusText(u) {
+  if (Number(u.approved) === 1) return '<span class="badge approved">Подтверждён</span>';
+  if (Number(u.approved) === -1) return '<span class="badge rejected">Отклонён</span>';
+  return '<span class="badge pending">Ожидает подтверждения</span>';
+}
+function groupOptions(selected, allowEmpty=true) {
+  return (allowEmpty ? '<option value="">Без группы</option>' : '<option value="">Выбери группу</option>') +
+    groups.map(g => `<option value="${Number(g.id)}" ${String(g.id)===String(selected ?? '')?'selected':''}>${esc(g.name)}</option>`).join('');
+}
+async function api(url, options={}) {
+  const response = await fetch(url, {
+    credentials:'same-origin',
+    ...options,
+    headers:{ ...(options.body ? {'Content-Type':'application/json'} : {}), ...(options.headers || {}) }
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || data.message || `Ошибка запроса (${response.status})`);
+  return data;
+}
+const post = (url, body) => api(url, {method:'POST',body:JSON.stringify(body)});
+const patch = (url, body) => api(url, {method:'PATCH',body:JSON.stringify(body)});
+
+function showModal(title, description, extraHtml, action) {
+  $('modalTitle').textContent = title;
+  $('modalText').textContent = description;
+  $('modalExtra').innerHTML = extraHtml || '';
+  $('adminPassword').value = '';
+  modalAction = action;
+  $('modal').classList.remove('hidden');
+  $('adminPassword').focus();
+}
+function closeModal() {
+  $('modal').classList.add('hidden');
+  $('adminPassword').value = '';
+  modalAction = null;
+}
+$('modalCancel').onclick = closeModal;
+$('modal').addEventListener('click', e => { if (e.target === $('modal')) closeModal(); });
+$('modalConfirm').onclick = async () => {
+  if (!modalAction) return;
+  const action = modalAction;
+  const password = $('adminPassword').value;
+  if (!password) { say('Введи пароль администратора.', true); return; }
+  $('modalConfirm').disabled = true;
+  try { await action(password); closeModal(); }
+  catch(e) { say(e.message, true); }
+  finally { $('modalConfirm').disabled = false; }
+};
+
+document.querySelectorAll('[data-tab]').forEach(btn => btn.onclick = () => {
+  document.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('active', b===btn));
+  ['requests','accounts','groups','teachers'].forEach(id => $(id).classList.toggle('hidden', id!==btn.dataset.tab));
+});
+
+async function loadGroups() {
+  groups = await api('/api/admin/groups');
+  if (!Array.isArray(groups)) groups = groups.groups || [];
+}
+async function loadUsers() {
+  users = await api('/api/admin/users');
+  if (!Array.isArray(users)) users = users.users || [];
+  teachers = users.filter(u => u.role === 'teacher');
+}
+async function loadPending() {
+  pending = await api('/api/admin/pending');
+  if (!Array.isArray(pending)) pending = pending.users || [];
+}
+async function refreshAll() {
+  try {
+    await Promise.all([loadGroups(), loadUsers(), loadPending()]);
+    renderPending(); renderAccounts(); renderGroups(); renderTeachers();
+    say('Данные обновлены.');
+  } catch(e) {
+    say(e.message + ' Проверь, что сервер запущен и ты вошёл под аккаунтом администратора.', true);
+  }
+}
+function renderPending() {
+  $('pendingCount').textContent = pending.length;
+  if (!pending.length) {
+    $('pendingList').innerHTML = '<div class="empty">Новых заявок нет. Новые регистрации студентов появятся здесь.</div>';
+    return;
+  }
+  $('pendingList').innerHTML = pending.map(u => `
+    <article class="card">
+      <span class="badge pending">Ожидает проверки</span>
+      <h3>${esc(u.name)}</h3>
+      <div>${esc(u.email)}</div>
+      <p class="muted">Аккаунт №${Number(u.id)}<br>Регистрация: ${esc(dateText(u.created_at))}</p>
+      <label for="approveGroup${Number(u.id)}">Назначить группу</label>
+      <select id="approveGroup${Number(u.id)}">${groupOptions('', false)}</select>
+      <button class="btn primary" data-approve="${Number(u.id)}">Подтвердить студента</button>
+      <button class="btn danger" data-reject="${Number(u.id)}">Отклонить</button>
+    </article>`).join('');
+
+  document.querySelectorAll('[data-approve]').forEach(btn => btn.onclick = async () => {
+    const id = Number(btn.dataset.approve);
+    const groupId = $('approveGroup'+id).value;
+    if (!groupId) { say('Сначала выбери учебную группу. Если групп ещё нет — создай её в разделе «Учебные группы».', true); return; }
+    btn.disabled = true;
+    try {
+      await post(`/api/admin/users/${id}/approve`, {group_id:Number(groupId)});
+      say('Студент подтверждён и добавлен в группу.');
+      await refreshAll();
+    } catch(e) { say(e.message,true); }
+    finally { btn.disabled = false; }
+  });
+  document.querySelectorAll('[data-reject]').forEach(btn => btn.onclick = async () => {
+    const id = Number(btn.dataset.reject);
+    if (!confirm('Отклонить заявку этого студента?')) return;
+    btn.disabled = true;
+    try {
+      await post(`/api/admin/users/${id}/reject`, {});
+      say('Заявка отклонена.');
+      await refreshAll();
+    } catch(e) { say(e.message,true); }
+    finally { btn.disabled = false; }
+  });
+}
+function renderAccounts() {
+  const query = $('search').value.trim().toLocaleLowerCase('ru');
+  const role = $('roleFilter').value;
+  const filtered = users.filter(u =>
+    (!role || u.role===role) &&
+    (!query || String(u.name||'').toLocaleLowerCase('ru').includes(query) ||
+      String(u.email||'').toLocaleLowerCase('ru').includes(query))
+  );
+  $('accountRows').innerHTML = filtered.length ? filtered.map(u => `
+    <tr>
+      <td><strong>${esc(u.name)}</strong><br><small>Аккаунт №${Number(u.id)}</small></td>
+      <td>${esc(u.email)}</td>
+      <td><span class="badge ${u.role==='student'?'student':u.role==='teacher'?'teacher':''}">${esc(roleText(u.role))}</span></td>
+      <td>${u.role==='student'?statusText(u):'<span class="badge approved">Активен</span>'}</td>
+      <td>${u.role==='student' ? `<select data-group-user="${Number(u.id)}">${groupOptions(u.group_id)}</select>` : esc(u.group_name || '—')}</td>
+      <td>
+        ${u.role==='student' && Number(u.approved)===1 ? `<a class="btn small-btn primary" href="/reviews.html?student_id=${Number(u.id)}">Работы</a>` : ''}
+        ${u.role!=='admin' ? `<button class="btn small-btn" data-reset="${Number(u.id)}">Сбросить пароль</button>` : ''}
+      </td>
+    </tr>`).join('') : '<tr><td colspan="6">Ничего не найдено.</td></tr>';
+
+  document.querySelectorAll('[data-group-user]').forEach(sel => sel.onchange = async () => {
+    const id = Number(sel.dataset.groupUser);
+    const value = sel.value ? Number(sel.value) : null;
+    sel.disabled = true;
+    try {
+      await post(`/api/admin/users/${id}/group`, {group_id:value});
+      say('Группа студента обновлена.');
+      await loadUsers(); renderAccounts();
+    } catch(e) { say(e.message,true); }
+    finally { sel.disabled = false; }
+  });
+  document.querySelectorAll('[data-reset]').forEach(btn => btn.onclick = () => {
+    const user = users.find(u => Number(u.id)===Number(btn.dataset.reset));
+    if (!user) return;
+    showModal('Сброс пароля', `Подтверди свою личность, чтобы сбросить пароль аккаунта ${user.name} (${user.email}).`, '', async adminPassword => {
+      const result = await post(`/api/admin/users/${Number(user.id)}/reset-password`, {admin_password:adminPassword});
+      const temporary = result.temporaryPassword || result.temporary_password || result.tempPassword || result.password;
+      if (!temporary) {
+        say(result.message || 'Запрос выполнен, но сервер не вернул временный пароль. Проверь формат ответа API.', true);
+        return;
+      }
+      showModal('Временный пароль создан', 'Передай этот пароль пользователю безопасным способом. После входа пользователь должен сменить его.', `<label>Временный пароль</label><input id="tempPasswordOutput" readonly value="${esc(temporary)}">`, async () => {
+        const input = $('tempPasswordOutput');
+        input.select();
+        document.execCommand('copy');
+        say('Временный пароль скопирован, если браузер разрешил копирование.');
+      });
+      $('modalTitle').textContent = 'Временный пароль создан';
+      $('modalText').textContent = 'Передай пароль пользователю безопасным способом. Закрой окно после сохранения пароля.';
+      $('adminPassword').classList.add('hidden');
+      $('modalExtra').innerHTML = `<label>Временный пароль</label><input id="tempPasswordOutput" readonly value="${esc(temporary)}"><button type="button" class="btn" id="copyTemp">Скопировать пароль</button>`;
+      $('modalConfirm').textContent = 'Готово';
+      $('modalConfirm').onclick = () => {
+        closeModal();
+        $('adminPassword').classList.remove('hidden');
+        $('modalConfirm').textContent = 'Подтвердить';
+        $('modalConfirm').onclick = null;
+        refreshAll();
+      };
+      $('modalCancel').textContent = 'Закрыть';
+      $('modalCancel').onclick = () => {
+        closeModal();
+        $('adminPassword').classList.remove('hidden');
+        $('modalCancel').textContent = 'Отмена';
+        $('modalCancel').onclick = closeModal;
+        $('modalConfirm').textContent = 'Подтвердить';
+        $('modalConfirm').onclick = null;
+        refreshAll();
+      };
+      $('copyTemp').onclick = async () => {
+        try { await navigator.clipboard.writeText(temporary); say('Временный пароль скопирован.'); }
+        catch { $('tempPasswordOutput').select(); document.execCommand('copy'); }
+      };
+    });
+  });
+}
+function renderGroups() {
+  $('groupList').innerHTML = groups.length ? groups.map(g => {
+    const members = users.filter(u => u.role==='student' && Number(u.group_id)===Number(g.id));
+    const assigned = users.filter(u => u.role==='teacher' && Number(u.group_id)===Number(g.id));
+    return `<article class="card">
+      <span class="badge">${members.length} студентов</span>
+      <h3>${esc(g.name)}</h3>
+      <p class="muted">Группа №${Number(g.id)}</p>
+      <label>Новое название</label>
+      <input id="rename${Number(g.id)}" maxlength="100" value="${esc(g.name)}">
+      <button class="btn" data-rename="${Number(g.id)}">Переименовать</button>
+      <label>Назначить преподавателей</label>
+      <div>${teachers.length ? teachers.map(t => `<label style="display:flex;gap:8px;align-items:center"><input style="width:auto" type="checkbox" data-group-teacher="${Number(g.id)}" value="${Number(t.id)}" ${assigned.some(x=>Number(x.id)===Number(t.id))?'checked':''}>${esc(t.name)}</label>`).join('') : '<small>Сначала создай преподавателя.</small>'}</div>
+      <button class="btn primary" data-save-teachers="${Number(g.id)}">Сохранить преподавателей</button>
+      <button class="btn danger" data-delete-group="${Number(g.id)}">Удалить группу</button>
+    </article>`;
+  }).join('') : '<div class="empty">Групп пока нет. Создай первую группу выше.</div>';
+
+  document.querySelectorAll('[data-rename]').forEach(btn => btn.onclick = async () => {
+    const id = Number(btn.dataset.rename), name = $('rename'+id).value.trim();
+    if (!name) { say('Введи название группы.',true); return; }
+    try { await patch(`/api/admin/groups/${id}`, {name}); say('Название группы обновлено.'); await refreshAll(); }
+    catch(e) { say(e.message,true); }
+  });
+  document.querySelectorAll('[data-save-teachers]').forEach(btn => btn.onclick = async () => {
+    const id = Number(btn.dataset.saveTeachers);
+    const ids = [...document.querySelectorAll(`[data-group-teacher="${id}"]:checked`)].map(x=>Number(x.value));
+    try { await api(`/api/admin/groups/${id}/teachers`, {method:'PUT',body:JSON.stringify({teacher_ids:ids})}); say('Преподаватели группы сохранены.'); await refreshAll(); }
+    catch(e) { say(e.message,true); }
+  });
+  document.querySelectorAll('[data-delete-group]').forEach(btn => btn.onclick = async () => {
+    const id = Number(btn.dataset.deleteGroup);
+    if (!confirm('Удалить группу? Сначала убедись, что в ней нет студентов.')) return;
+    try { await api(`/api/admin/groups/${id}`, {method:'DELETE'}); say('Группа удалена.'); await refreshAll(); }
+    catch(e) { say(e.message,true); }
+  });
+}
+function renderTeachers() {
+  $('teacherList').innerHTML = teachers.length ? teachers.map(t => `
+    <article class="card">
+      <span class="badge teacher">Преподаватель</span>
+      <h3>${esc(t.name)}</h3><div>${esc(t.email)}</div>
+      <p class="muted">Аккаунт №${Number(t.id)}</p>
+      <button class="btn danger" data-remove-teacher="${Number(t.id)}">Снять роль преподавателя</button>
+    </article>`).join('') : '<div class="empty">Преподавателей пока нет.</div>';
+  document.querySelectorAll('[data-remove-teacher]').forEach(btn => btn.onclick = async () => {
+    const id = Number(btn.dataset.removeTeacher);
+    if (!confirm('Снять роль преподавателя? Сначала убедись, что это необходимо.')) return;
+    try { await api(`/api/admin/teachers/${id}`, {method:'DELETE'}); say('Роль преподавателя снята.'); await refreshAll(); }
+    catch(e) { say(e.message,true); }
+  });
+}
+
+$('search').addEventListener('input', renderAccounts);
+$('roleFilter').addEventListener('change', renderAccounts);
+
+$('groupForm').onsubmit = async e => {
+  e.preventDefault();
+  const name = $('groupName').value.trim();
+  if (!name) return;
+  try {
+    await post('/api/admin/groups', {name});
+    $('groupForm').reset();
+    say('Группа создана.');
+    await refreshAll();
+  } catch(e) { say(e.message,true); }
+};
+$('teacherForm').onsubmit = async e => {
+  e.preventDefault();
+  const btn = $('teacherSubmit');
+  btn.disabled = true;
+  try {
+    const result = await post('/api/admin/teachers', {
+      name:$('teacherName').value.trim(),
+      email:$('teacherEmail').value.trim(),
+      password:$('teacherPassword').value
+    });
+    $('teacherForm').reset();
+    say(result.message || 'Преподаватель создан.');
+    await refreshAll();
+  } catch(e) { say(e.message,true); }
+  finally { btn.disabled = false; }
+};
+
+async function init() {
+  try {
+    const me = await api('/api/me');
+    if (me.role !== 'admin') {
+      say('Эта страница доступна только администратору.',true);
+      document.querySelector('main').classList.add('hidden');
+      return;
+    }
+    await refreshAll();
+  } catch(e) {
+    say(e.message + ' Войди в аккаунт администратора и обнови страницу.',true);
+  }
+}
+window.refreshAll = refreshAll;
+init();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
