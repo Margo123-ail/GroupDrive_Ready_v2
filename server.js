@@ -373,17 +373,21 @@ async function initDb() {
       [adminEmail]
     );
 
+    const hash = await bcrypt.hash(adminPassword, 12);
+
     if (existing) {
       await run(`
         UPDATE users
-        SET role='admin',approved=1,confirmed=1,group_id=NULL
+        SET password_hash=?,
+            role='admin',
+            approved=1,
+            confirmed=1,
+            group_id=NULL
         WHERE id=?
-      `, [existing.id]);
+      `, [hash, existing.id]);
 
-      console.log('Администратор подтверждён:', adminEmail);
+      console.log('Пароль администратора обновлён:', adminEmail);
     } else {
-      const hash = await bcrypt.hash(adminPassword, 12);
-
       await run(`
         INSERT INTO users(name,email,password_hash,role,confirmed,approved)
         VALUES(?,?,?,'admin',1,1)
