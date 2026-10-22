@@ -1283,7 +1283,7 @@ app.post('/api/share/:fileId', requireAuth, asyncRoute(async (req, res) => {
   `, [fileId, shareToken, me.id, allow, expiresAt]);
 
   res.json({
-    url: `${baseUrl()}/share/${shareToken}`,
+    url: `${req.protocol}://${req.get('host')}/share/${shareToken}`,
     allow_download: !!allow,
     expires_at: expiresAt
   });
