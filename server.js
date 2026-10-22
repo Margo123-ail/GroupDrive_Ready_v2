@@ -80,6 +80,7 @@ function asyncRoute(fn) {
 }
 
 app.disable('x-powered-by');
+app.set('trust proxy', 1);
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: false }));
 
@@ -498,16 +499,25 @@ app.post('/api/login', asyncRoute(async (req, res) => {
 
     req.session.userId = user.id;
 
-    res.json({
-      ok: true,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        group_id: user.group_id,
-        must_change_password: !!user.must_change_password
+    req.session.save(saveErr => {
+      if (saveErr) {
+        console.error('Не удалось сохранить сессию:', saveErr);
+        return res.status(500).json({
+          error: 'Не удалось сохранить сессию. Попробуй войти ещё раз.'
+        });
       }
+
+      res.json({
+        ok: true,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          group_id: user.group_id,
+          must_change_password: !!user.must_change_password
+        }
+      });
     });
   });
 }));
